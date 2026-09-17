@@ -1,0 +1,2505 @@
+{
+  "components": {
+    "Agent:EveryBreadsThink": {
+      "downstream": [
+        "Switch:QuickWordsRest"
+      ],
+      "obj": {
+        "component_name": "Agent",
+        "params": {
+          "cite": false,
+          "delay_after_error": 1,
+          "description": "",
+          "exception_default_value": "",
+          "exception_goto": [],
+          "exception_method": "",
+          "frequencyPenaltyEnabled": false,
+          "frequency_penalty": 0,
+          "llm_id": "efca8806adc011f1a79eebaa53515a81",
+          "maxTokensEnabled": true,
+          "max_retries": 1,
+          "max_rounds": 1,
+          "max_tokens": 64,
+          "mcp": [],
+          "message_history_window_size": 12,
+          "outputs": {
+            "content": {
+              "type": "string",
+              "value": ""
+            }
+          },
+          "parameter": "Custom",
+          "presencePenaltyEnabled": false,
+          "presence_penalty": 0,
+          "prompts": [
+            {
+              "content": " {sys.query}",
+              "role": "user"
+            }
+          ],
+          "showStructuredOutput": false,
+          "sys_prompt": "Ты классифицируешь запросы пользователей системы поиска по данным Redmine.\r\n\r\nОпредели, какой режим обработки нужен для ответа.\r\n\r\nSEMANTIC:\r\nИспользуй, если ответ находится в текстовом содержимом Redmine:\r\nwiki, описания задач, комментарии, Markdown-документы и т.п.\r\n\r\nПримеры:\r\n- Как настроить датчик XX?\r\n- Какие фильтры аномалий применяются для фильтрации данных с РЛС?\r\n- Как работает модуль авторизации?\r\n- Что написано в wiki про обработку ошибок?\r\n\r\nSQL:\r\nИспользуй, если требуется точная структурированная информация из PostgreSQL:\r\n- количество;\r\n- COUNT, SUM, AVG, MIN, MAX;\r\n- статусы;\r\n- даты;\r\n- авторы;\r\n- проекты;\r\n- списки задач;\r\n- связи между сущностями.\r\n\r\nПримеры:\r\n- Сколько открытых задач у Иванова?\r\n- Сколько задач в проекте УУ?\r\n- Какие задачи создал Иванов?\r\n- Когда Иванов последний раз публиковал комментарий?\r\n\r\nHYBRID:\r\nИспользуй, если PostgreSQL нужен для определения конкретных сущностей\r\nили структурированных данных, а текстовые документы нужны для описания,\r\nобъяснения или анализа этих сущностей.\r\n\r\nПримеры:\r\n- Какие открытые задачи проекта УУ связаны с фильтрами аномалий?\r\n- Найди задачи Иванова по датчику XX и кратко опиши проблемы.\r\n- Сколько задач связано с датчиком XX и что в них написано?\r\n\r\nПравила:\r\n\r\n1. Выбери только один класс.\r\n2. Не отвечай на вопрос пользователя.\r\n3. Верни только одно слово без пояснений.\r\n\r\nДопустимые ответы:\r\n\r\nSEMANTIC\r\nSQL\r\nHYBRID",
+          "temperature": 0.1,
+          "temperatureEnabled": true,
+          "thinking": "disabled",
+          "tools": [
+            {
+              "component_name": "Retrieval",
+              "id": "Retrieval:FreeOlivesPump",
+              "name": "Retrieval_0",
+              "params": {
+                "cross_languages": [],
+                "description": "",
+                "empty_response": "",
+                "kb_ids": [],
+                "keywords_similarity_weight": 0.7,
+                "outputs": {
+                  "formalized_content": {
+                    "type": "string",
+                    "value": ""
+                  },
+                  "json": {
+                    "type": "Array<Object>",
+                    "value": []
+                  }
+                },
+                "rerank_id": "",
+                "retrieval_from": "dataset",
+                "similarity_threshold": 0.2,
+                "top_k": 1024,
+                "top_n": 8
+              }
+            }
+          ],
+          "topPEnabled": false,
+          "top_p": 0.75,
+          "user_prompt": "",
+          "visual_files_var": ""
+        }
+      },
+      "upstream": [
+        "begin"
+      ]
+    },
+    "Agent:GreatTurkeysEnter": {
+      "downstream": [
+        "ExeSQL:FreshHatsProve"
+      ],
+      "obj": {
+        "component_name": "Agent",
+        "params": {
+          "cite": true,
+          "delay_after_error": 1,
+          "description": "",
+          "exception_default_value": "",
+          "exception_goto": [],
+          "exception_method": "",
+          "frequencyPenaltyEnabled": true,
+          "frequency_penalty": 0,
+          "llm_id": "efca8806adc011f1a79eebaa53515a81",
+          "maxTokensEnabled": true,
+          "max_retries": 3,
+          "max_rounds": 1,
+          "max_tokens": 2048,
+          "mcp": [],
+          "message_history_window_size": 12,
+          "outputs": {
+            "content": {
+              "type": "string",
+              "value": ""
+            }
+          },
+          "parameter": "Custom",
+          "presencePenaltyEnabled": true,
+          "presence_penalty": 0,
+          "prompts": [
+            {
+              "content": "USER QUESTION:\r\n{sys.query} \r\n\r {Retrieval:StrictMomentsWink@formalized_content}\n {Retrieval:DarkGlassesFlash@formalized_content}\n {Retrieval:FiveCamerasWear@formalized_content}\n\r",
+              "role": "user"
+            }
+          ],
+          "showStructuredOutput": false,
+          "sys_prompt": "Ты являешься Text-to-SQL генератором для PostgreSQL базы данных Redmine.\r\n\r\nТвоя задача — преобразовать вопрос пользователя в ОДИН корректный\r\nPostgreSQL SELECT-запрос.\r\n\r\nИСТОЧНИК ИСТИНЫ:\r\n\r\n1. DATABASE SCHEMA\r\n2. DATABASE DESCRIPTION\r\n3. SIMILAR QUESTION → SQL EXAMPLES\r\n\r\nИспользуй только таблицы и поля, присутствующие в DATABASE SCHEMA.\r\n\r\nПРАВИЛА:\r\n\r\n1. Верни только SQL-запрос.\r\n2. Не используй Markdown.\r\n3. Не добавляй пояснения.\r\n4. Разрешён только SELECT.\r\n5. Запрещены:\r\n   INSERT\r\n   UPDATE\r\n   DELETE\r\n   DROP\r\n   ALTER\r\n   CREATE\r\n   TRUNCATE\r\n   GRANT\r\n   REVOKE\r\n\r\n6. Никогда не придумывай:\r\n   - таблицы;\r\n   - поля;\r\n   - значения;\r\n   - ID;\r\n   - связи.\r\n\r\n7. Используй явные JOIN ... ON ....\r\n8. Корректно обрабатывай NULL.\r\n9. Для количества используй COUNT().\r\n10. Для агрегатов используй GROUP BY.\r\n11. Для поиска последней записи используй ORDER BY ... DESC\r\n    и LIMIT 1 либо MAX(), если это соответствует вопросу.\r\n12. Для вопросов \"открытые задачи\" используй фактическое поле\r\n    статуса согласно DATABASE DESCRIPTION.\r\n13. Для поиска пользователя по ФИО не придумывай ID.\r\n    Используй соответствующие поля users согласно schema.\r\n14. Если возвращается список, используй LIMIT.\r\n15. Не используй SELECT * без необходимости.\r\n16. Выбирай только столбцы, необходимые для ответа.\r\n17. Избегай дублирования строк при JOIN.\r\n18. Если для ответа необходимо несколько связанных таблиц,\r\n    используй соответствующие JOIN.\r\n19. Если данных в схеме недостаточно для ответа,\r\n    верни:\r\n\r\nSELECT 'INSUFFICIENT_DATA' AS error;\r\n\r\n20. SQL должен быть валидным PostgreSQL.\r\n\r\nПЕРЕД ФОРМИРОВАНИЕМ SQL:\r\n\r\n- определи сущности из вопроса;\r\n- определи необходимые таблицы;\r\n- проверь связи между таблицами;\r\n- проверь значения статусов;\r\n- проверь поля дат;\r\n- только после этого сформируй запрос.\n\r\nДля поиска подзадач используйте таблицу issue_relations:\r\n- issue_id - ID родительской задачи\r\n- issue_to_id - ID связанной задачи (подзадачи)\r\n- relation_type - тип связи (например, 'relates', 'blocks', 'precedes')\r\n\r\nПример запроса для подзадач:\r\nSELECT ir.relation_type, i.id, i.subject, i.status \r\nFROM issue_relations ir \r\nJOIN issues i ON ir.issue_to_id = i.id \r\nWHERE ir.issue_id = {parent_issue_id} \r\nAND i.is_closed = false\n\r\nВерни только SQL. Не добавляй пробелы и переносы строк в начале ответа.",
+          "temperature": 0.05,
+          "temperatureEnabled": true,
+          "thinking": "disabled",
+          "tools": [
+            {
+              "component_name": "Retrieval",
+              "id": "Retrieval:CuddlyNightsShave",
+              "name": "Retrieval_0",
+              "params": {
+                "cross_languages": [],
+                "description": "",
+                "empty_response": "",
+                "kb_ids": [],
+                "keywords_similarity_weight": 0.7,
+                "outputs": {
+                  "formalized_content": {
+                    "type": "string",
+                    "value": ""
+                  },
+                  "json": {
+                    "type": "Array<Object>",
+                    "value": []
+                  }
+                },
+                "rerank_id": "",
+                "retrieval_from": "dataset",
+                "similarity_threshold": 0.2,
+                "top_k": 1024,
+                "top_n": 8
+              }
+            }
+          ],
+          "topPEnabled": false,
+          "top_p": 0.75,
+          "user_prompt": "",
+          "visual_files_var": ""
+        }
+      },
+      "upstream": [
+        "Retrieval:StrictMomentsWink",
+        "Retrieval:FiveCamerasWear",
+        "Retrieval:DarkGlassesFlash"
+      ]
+    },
+    "Agent:OddDoorsHang": {
+      "downstream": [
+        "Message:CuddlyShoesJog"
+      ],
+      "obj": {
+        "component_name": "Agent",
+        "params": {
+          "cite": true,
+          "delay_after_error": 1,
+          "description": "",
+          "exception_default_value": "",
+          "exception_goto": [],
+          "exception_method": "",
+          "frequencyPenaltyEnabled": true,
+          "frequency_penalty": 0,
+          "llm_id": "efca8806adc011f1a79eebaa53515a81",
+          "maxTokensEnabled": true,
+          "max_retries": 3,
+          "max_rounds": 1,
+          "max_tokens": 1024,
+          "mcp": [],
+          "message_history_window_size": 12,
+          "outputs": {
+            "content": {
+              "type": "string",
+              "value": ""
+            }
+          },
+          "presencePenaltyEnabled": true,
+          "presence_penalty": 0,
+          "prompts": [
+            {
+              "content": "  {sys.query}",
+              "role": "user"
+            }
+          ],
+          "showStructuredOutput": false,
+          "sys_prompt": "Ты отвечаешь на вопросы по базе знаний Redmine.\r\n\r\nИспользуй только информацию из предоставленного контекста.\r\n\r\nПравила:\r\n\r\n1. Не используй внешние знания.\r\n2. Не придумывай факты, значения, даты, имена и номера задач.\r\n3. Если контекст не содержит ответа, явно сообщи:\r\n   \"В найденных данных недостаточно информации для ответа.\"\r\n4. Если несколько фрагментов относятся к одному объекту,\r\n   объединяй их только если это следует из контекста.\r\n5. Различай факты из разных задач, проектов и пользователей.\r\n6. Если в контексте есть номер задачи, проект или автор,\r\n   сохраняй их точно.\r\n7. Отвечай на русском языке.\r\n8. Для технических вопросов используй структурированный ответ.\r\n9. Не пересказывай нерелевантный контекст.\r\n\r\nОтвет должен непосредственно отвечать на вопрос пользователя.",
+          "temperature": 0.1,
+          "temperatureEnabled": true,
+          "thinking": "disabled",
+          "tools": [
+            {
+              "component_name": "Retrieval",
+              "id": "Retrieval:FineGeckosRelax",
+              "name": "Retrieval_Redmine",
+              "params": {
+                "cross_languages": [],
+                "dataset_ids": [
+                  "27465568a10e11f19d0afbfcda4dce55"
+                ],
+                "description": "",
+                "empty_response": "",
+                "kb_ids": [],
+                "keywords_similarity_weight": 0.3,
+                "meta_data_filter": {
+                  "method": "auto"
+                },
+                "outputs": {
+                  "formalized_content": {
+                    "type": "string",
+                    "value": ""
+                  },
+                  "json": {
+                    "type": "Array<Object>",
+                    "value": []
+                  }
+                },
+                "rerank_id": "",
+                "retrieval_from": "dataset",
+                "similarity_threshold": 0.2,
+                "top_k": 1024,
+                "top_n": 8
+              }
+            }
+          ],
+          "topPEnabled": true,
+          "top_p": 0.3,
+          "user_prompt": "",
+          "visual_files_var": ""
+        }
+      },
+      "upstream": [
+        "Switch:QuickWordsRest",
+        "Switch:QuickWordsRest"
+      ]
+    },
+    "Agent:SmallJokesScream": {
+      "downstream": [
+        "Message:ShaggyTipsDress"
+      ],
+      "obj": {
+        "component_name": "Agent",
+        "params": {
+          "cite": true,
+          "delay_after_error": 1,
+          "description": "",
+          "exception_default_value": "",
+          "exception_goto": [],
+          "exception_method": "",
+          "frequencyPenaltyEnabled": false,
+          "frequency_penalty": 0.7,
+          "llm_id": "efca8806adc011f1a79eebaa53515a81",
+          "maxTokensEnabled": true,
+          "max_retries": 3,
+          "max_rounds": 1,
+          "max_tokens": 1024,
+          "mcp": [],
+          "message_history_window_size": 12,
+          "outputs": {
+            "content": {
+              "type": "string",
+              "value": ""
+            }
+          },
+          "presencePenaltyEnabled": false,
+          "presence_penalty": 0.4,
+          "prompts": [
+            {
+              "content": " ORIGINAL QUESTION:\n{sys.query}\n{ExeSQL:YummyLizardsSell@formalized_content}",
+              "role": "user"
+            }
+          ],
+          "showStructuredOutput": false,
+          "sys_prompt": "Ты финальный ассистент системы Hybrid Redmine Search.\r\n\r\nТебе предоставлены три источника:\r\n\r\n1. ORIGINAL QUESTION\r\n   Исходный вопрос пользователя.\r\n\r\n2. SQL RESULT\r\n   Структурированные данные PostgreSQL.\r\n\r\n3. SEMANTIC CONTEXT\r\n   Текстовые данные из Redmine.\r\n\r\nИспользуй их следующим образом:\r\n\r\nSQL RESULT является источником истины для:\r\n- количества;\r\n- дат;\r\n- статусов;\r\n- идентификаторов;\r\n- названий проектов;\r\n- пользователей;\r\n- связей между структурированными сущностями.\r\n\r\nSEMANTIC CONTEXT является источником истины для:\r\n- описаний;\r\n- содержания задач;\r\n- комментариев;\r\n- wiki;\r\n- технических объяснений;\r\n- причин и деталей проблем.\r\n\r\nНе выдумывай отсутствующие сведения.\r\n\r\nЕсли SQL RESULT и SEMANTIC CONTEXT противоречат друг другу:\r\n1. для структурированных данных доверяй SQL;\r\n2. для текстового содержания используй semantic context;\r\n3. явно сообщи о противоречии, если оно влияет на ответ.\r\n\r\nЕсли SQL определил конкретные задачи, используй semantic context\r\nдля описания именно этих задач, а не других похожих задач.\r\n\r\nНе подменяй найденные SQL-сущности семантически похожими сущностями.\r\n\r\nЕсли данных недостаточно, явно сообщи об этом.\r\n\r\nОтвечай на русском языке.\r\n\r\nДавай непосредственный ответ на вопрос пользователя.\r\nНе показывай SQL и внутренние этапы работы, если пользователь\r\nявно их не запросил.",
+          "temperature": 0.1,
+          "temperatureEnabled": true,
+          "thinking": "disabled",
+          "tools": [
+            {
+              "component_name": "Retrieval",
+              "id": "Retrieval:SevenMeteorsWalk",
+              "name": "Retrieval_Redmine",
+              "params": {
+                "cross_languages": [],
+                "dataset_ids": [
+                  "27465568a10e11f19d0afbfcda4dce55"
+                ],
+                "description": "",
+                "empty_response": "",
+                "kb_ids": [],
+                "keywords_similarity_weight": 0.5,
+                "meta_data_filter": {
+                  "method": "auto"
+                },
+                "outputs": {
+                  "formalized_content": {
+                    "type": "string",
+                    "value": ""
+                  },
+                  "json": {
+                    "type": "Array<Object>",
+                    "value": []
+                  }
+                },
+                "rerank_id": "",
+                "retrieval_from": "dataset",
+                "similarity_threshold": 0.2,
+                "top_k": 1024,
+                "top_n": 8
+              }
+            }
+          ],
+          "topPEnabled": false,
+          "top_p": 0.3,
+          "user_prompt": "",
+          "visual_files_var": ""
+        }
+      },
+      "upstream": [
+        "ExeSQL:YummyLizardsSell"
+      ]
+    },
+    "Agent:SwiftTreesLick": {
+      "downstream": [
+        "Message:PlentyMugsMake"
+      ],
+      "obj": {
+        "component_name": "Agent",
+        "params": {
+          "cite": true,
+          "delay_after_error": 1,
+          "description": "",
+          "exception_default_value": "",
+          "exception_goto": [],
+          "exception_method": "",
+          "frequencyPenaltyEnabled": true,
+          "frequency_penalty": 0,
+          "llm_id": "efca8806adc011f1a79eebaa53515a81",
+          "maxTokensEnabled": true,
+          "max_retries": 3,
+          "max_rounds": 1,
+          "max_tokens": 1024,
+          "mcp": [],
+          "message_history_window_size": 12,
+          "outputs": {
+            "content": {
+              "type": "string",
+              "value": ""
+            }
+          },
+          "parameter": "Custom",
+          "presencePenaltyEnabled": true,
+          "presence_penalty": 0,
+          "prompts": [
+            {
+              "content": "USER QUESTION:\r\n{sys.query}\r\n\r {ExeSQL:FreshHatsProve@json}",
+              "role": "user"
+            }
+          ],
+          "showStructuredOutput": false,
+          "sys_prompt": "Ты формируешь окончательный ответ на вопрос пользователя\r\nна основе результата PostgreSQL.\r\n\r\nИспользуй ТОЛЬКО результат SQL.\r\n\r\nПравила:\r\n\r\n1. Не придумывай значения.\r\n2. Не пересчитывай данные самостоятельно, если SQL уже выполнил\r\n   необходимую агрегацию.\r\n3. Сохраняй точные числа, даты, имена и идентификаторы.\r\n4. Если результат содержит несколько строк — представь их\r\n   структурированно.\r\n5. Если SQL вернул 0 строк, сообщи об отсутствии записей.\r\n6. Если SQL вернул ошибку или INSUFFICIENT_DATA,\r\n   объясни это пользователю понятным языком.\r\n7. Не показывай SQL, если пользователь явно его не запросил.\r\n8. Отвечай на русском языке.\r\n9. Отвечай кратко и непосредственно.\r\n\r\nВажно:\r\nSQL является источником истины для чисел, дат, статусов и других\r\nструктурированных данных.",
+          "temperature": 0.05,
+          "temperatureEnabled": true,
+          "thinking": "disabled",
+          "tools": [
+            {
+              "component_name": "Retrieval",
+              "id": "Retrieval:ThirtyKnivesThink",
+              "name": "Retrieval_0",
+              "params": {
+                "cross_languages": [],
+                "description": "",
+                "empty_response": "",
+                "kb_ids": [],
+                "keywords_similarity_weight": 0.7,
+                "outputs": {
+                  "formalized_content": {
+                    "type": "string",
+                    "value": ""
+                  },
+                  "json": {
+                    "type": "Array<Object>",
+                    "value": []
+                  }
+                },
+                "rerank_id": "",
+                "retrieval_from": "dataset",
+                "similarity_threshold": 0.2,
+                "top_k": 1024,
+                "top_n": 8
+              }
+            }
+          ],
+          "topPEnabled": true,
+          "top_p": 0.3,
+          "user_prompt": "",
+          "visual_files_var": ""
+        }
+      },
+      "upstream": [
+        "ExeSQL:FreshHatsProve"
+      ]
+    },
+    "Agent:YoungDragonsClean": {
+      "downstream": [
+        "ExeSQL:YummyLizardsSell"
+      ],
+      "obj": {
+        "component_name": "Agent",
+        "params": {
+          "cite": true,
+          "delay_after_error": 1,
+          "description": "",
+          "exception_default_value": "",
+          "exception_goto": [],
+          "exception_method": "",
+          "frequencyPenaltyEnabled": true,
+          "frequency_penalty": 0,
+          "llm_id": "efca8806adc011f1a79eebaa53515a81",
+          "maxTokensEnabled": true,
+          "max_retries": 3,
+          "max_rounds": 1,
+          "max_tokens": 2048,
+          "mcp": [],
+          "message_history_window_size": 12,
+          "outputs": {
+            "content": {
+              "type": "string",
+              "value": ""
+            }
+          },
+          "parameter": "Custom",
+          "presencePenaltyEnabled": true,
+          "presence_penalty": 0,
+          "prompts": [
+            {
+              "content": "USER QUESTION:\r\n{sys.query}\r\n\r {Retrieval:FluffyMammalsSink@formalized_content}\n {Retrieval:CleverCarsAccept@formalized_content}\n {Retrieval:NineRoomsSend@formalized_content}",
+              "role": "user"
+            }
+          ],
+          "showStructuredOutput": false,
+          "sys_prompt": "Для HYBRID-запроса SQL должен в первую очередь определить\r\nконкретные структурированные сущности, которые будут использованы\r\nпоследующим семантическим поиском.\r\n\r\nЕсли вопрос касается задач, по возможности возвращай:\r\n\r\n- issue_id\r\n- project_id\r\n- author_id\r\n- assigned_to_id\r\n- subject\r\n- status\r\n- created_on\r\n- updated_on\r\n\r\nНе ограничивай SQL только COUNT(), если последующему RAG\r\nпонадобятся конкретные сущности для поиска текста.",
+          "temperature": 0.05,
+          "temperatureEnabled": true,
+          "thinking": "disabled",
+          "tools": [
+            {
+              "component_name": "Retrieval",
+              "id": "Retrieval:ColdMonthsCount",
+              "name": "Retrieval_0",
+              "params": {
+                "cross_languages": [],
+                "description": "",
+                "empty_response": "",
+                "kb_ids": [],
+                "keywords_similarity_weight": 0.7,
+                "outputs": {
+                  "formalized_content": {
+                    "type": "string",
+                    "value": ""
+                  },
+                  "json": {
+                    "type": "Array<Object>",
+                    "value": []
+                  }
+                },
+                "rerank_id": "",
+                "retrieval_from": "dataset",
+                "similarity_threshold": 0.2,
+                "top_k": 1024,
+                "top_n": 8
+              }
+            }
+          ],
+          "topPEnabled": false,
+          "top_p": 0.75,
+          "user_prompt": "",
+          "visual_files_var": ""
+        }
+      },
+      "upstream": [
+        "Retrieval:CleverCarsAccept",
+        "Retrieval:NineRoomsSend",
+        "Retrieval:FluffyMammalsSink"
+      ]
+    },
+    "ExeSQL:FreshHatsProve": {
+      "downstream": [
+        "Agent:SwiftTreesLick"
+      ],
+      "obj": {
+        "component_name": "ExeSQL",
+        "params": {
+          "database": "RedProxyMine",
+          "db_type": "postgres",
+          "host": "192.168...",
+          "max_records": 200,
+          "outputs": {
+            "formalized_content": {
+              "type": "string",
+              "value": ""
+            },
+            "json": {
+              "type": "Array<Object>",
+              "value": []
+            }
+          },
+          "password": "password",
+          "port": 5432,
+          "sql": " {Agent:GreatTurkeysEnter@content}",
+          "username": "username"
+        }
+      },
+      "upstream": [
+        "Agent:GreatTurkeysEnter"
+      ]
+    },
+    "ExeSQL:YummyLizardsSell": {
+      "downstream": [
+        "Agent:SmallJokesScream"
+      ],
+      "obj": {
+        "component_name": "ExeSQL",
+        "params": {
+          "database": "RedProxyMine",
+          "db_type": "postgres",
+          "host": "192.168...",
+          "max_records": 200,
+          "outputs": {
+            "formalized_content": {
+              "type": "string",
+              "value": ""
+            },
+            "json": {
+              "type": "Array<Object>",
+              "value": []
+            }
+          },
+          "password": "password",
+          "port": 5432,
+          "sql": " {Agent:YoungDragonsClean@content}",
+          "username": "username"
+        }
+      },
+      "upstream": [
+        "Agent:YoungDragonsClean"
+      ]
+    },
+    "Message:CuddlyShoesJog": {
+      "downstream": [],
+      "obj": {
+        "component_name": "Message",
+        "params": {
+          "content": [
+            "  {Agent:OddDoorsHang@content}"
+          ]
+        }
+      },
+      "upstream": [
+        "Agent:OddDoorsHang"
+      ]
+    },
+    "Message:PlentyMugsMake": {
+      "downstream": [],
+      "obj": {
+        "component_name": "Message",
+        "params": {
+          "content": [
+            "{Agent:SwiftTreesLick@content}"
+          ]
+        }
+      },
+      "upstream": [
+        "Agent:SwiftTreesLick"
+      ]
+    },
+    "Message:ShaggyTipsDress": {
+      "downstream": [],
+      "obj": {
+        "component_name": "Message",
+        "params": {
+          "content": [
+            " {Agent:SmallJokesScream@content}"
+          ]
+        }
+      },
+      "upstream": [
+        "Agent:SmallJokesScream"
+      ]
+    },
+    "Retrieval:CleverCarsAccept": {
+      "downstream": [
+        "Agent:YoungDragonsClean"
+      ],
+      "obj": {
+        "component_name": "Retrieval",
+        "params": {
+          "cross_languages": [],
+          "dataset_ids": [
+            "73524de8a95311f19d0afbfcda4dce55"
+          ],
+          "empty_response": "",
+          "kb_ids": [],
+          "keywords_similarity_weight": 0.7,
+          "meta_data_filter": {},
+          "outputs": {
+            "formalized_content": {
+              "type": "string",
+              "value": ""
+            },
+            "json": {
+              "type": "Array<Object>",
+              "value": []
+            }
+          },
+          "query": "{sys.query}",
+          "rerank_id": "",
+          "retrieval_from": "dataset",
+          "similarity_threshold": 0.2,
+          "top_k": 1024,
+          "top_n": 8
+        }
+      },
+      "upstream": [
+        "Switch:QuickWordsRest"
+      ]
+    },
+    "Retrieval:DarkGlassesFlash": {
+      "downstream": [
+        "Agent:GreatTurkeysEnter"
+      ],
+      "obj": {
+        "component_name": "Retrieval",
+        "params": {
+          "cross_languages": [],
+          "dataset_ids": [
+            "73524de8a95311f19d0afbfcda4dce55"
+          ],
+          "empty_response": "",
+          "kb_ids": [],
+          "keywords_similarity_weight": 0.7,
+          "meta_data_filter": {},
+          "outputs": {
+            "formalized_content": {
+              "type": "string",
+              "value": ""
+            },
+            "json": {
+              "type": "Array<Object>",
+              "value": []
+            }
+          },
+          "query": "{sys.query}",
+          "rerank_id": "",
+          "retrieval_from": "dataset",
+          "similarity_threshold": 0.2,
+          "top_k": 1024,
+          "top_n": 4
+        }
+      },
+      "upstream": [
+        "Switch:QuickWordsRest"
+      ]
+    },
+    "Retrieval:FiveCamerasWear": {
+      "downstream": [
+        "Agent:GreatTurkeysEnter"
+      ],
+      "obj": {
+        "component_name": "Retrieval",
+        "params": {
+          "cross_languages": [],
+          "dataset_ids": [
+            "26e4c3b4a95311f19d0afbfcda4dce55"
+          ],
+          "empty_response": "",
+          "kb_ids": [],
+          "keywords_similarity_weight": 0.5,
+          "meta_data_filter": {},
+          "outputs": {
+            "formalized_content": {
+              "type": "string",
+              "value": ""
+            },
+            "json": {
+              "type": "Array<Object>",
+              "value": []
+            }
+          },
+          "query": "{sys.query}",
+          "rerank_id": "",
+          "retrieval_from": "dataset",
+          "similarity_threshold": 0.2,
+          "top_k": 1024,
+          "top_n": 5
+        }
+      },
+      "upstream": [
+        "Switch:QuickWordsRest"
+      ]
+    },
+    "Retrieval:FluffyMammalsSink": {
+      "downstream": [
+        "Agent:YoungDragonsClean"
+      ],
+      "obj": {
+        "component_name": "Retrieval",
+        "params": {
+          "cross_languages": [],
+          "dataset_ids": [
+            "8d4f781ca95111f19d0afbfcda4dce55"
+          ],
+          "empty_response": "",
+          "kb_ids": [],
+          "keywords_similarity_weight": 0.7,
+          "meta_data_filter": {},
+          "outputs": {
+            "formalized_content": {
+              "type": "string",
+              "value": ""
+            },
+            "json": {
+              "type": "Array<Object>",
+              "value": []
+            }
+          },
+          "query": "{sys.query}",
+          "rerank_id": "",
+          "retrieval_from": "dataset",
+          "similarity_threshold": 0.2,
+          "top_k": 1024,
+          "top_n": 8
+        }
+      },
+      "upstream": [
+        "Switch:QuickWordsRest"
+      ]
+    },
+    "Retrieval:NineRoomsSend": {
+      "downstream": [
+        "Agent:YoungDragonsClean"
+      ],
+      "obj": {
+        "component_name": "Retrieval",
+        "params": {
+          "cross_languages": [],
+          "dataset_ids": [
+            "26e4c3b4a95311f19d0afbfcda4dce55"
+          ],
+          "empty_response": "",
+          "kb_ids": [],
+          "keywords_similarity_weight": 0.7,
+          "meta_data_filter": {},
+          "outputs": {
+            "formalized_content": {
+              "type": "string",
+              "value": ""
+            },
+            "json": {
+              "type": "Array<Object>",
+              "value": []
+            }
+          },
+          "query": "{sys.query}",
+          "rerank_id": "",
+          "retrieval_from": "dataset",
+          "similarity_threshold": 0.2,
+          "top_k": 1024,
+          "top_n": 8
+        }
+      },
+      "upstream": [
+        "Switch:QuickWordsRest"
+      ]
+    },
+    "Retrieval:StrictMomentsWink": {
+      "downstream": [
+        "Agent:GreatTurkeysEnter"
+      ],
+      "obj": {
+        "component_name": "Retrieval",
+        "params": {
+          "cross_languages": [],
+          "dataset_ids": [
+            "8d4f781ca95111f19d0afbfcda4dce55"
+          ],
+          "empty_response": "",
+          "kb_ids": [],
+          "keywords_similarity_weight": 0.7,
+          "meta_data_filter": {},
+          "outputs": {
+            "formalized_content": {
+              "type": "string",
+              "value": ""
+            },
+            "json": {
+              "type": "Array<Object>",
+              "value": []
+            }
+          },
+          "query": "{sys.query}",
+          "rerank_id": "",
+          "retrieval_from": "dataset",
+          "similarity_threshold": 0.2,
+          "top_k": 1024,
+          "top_n": 2
+        }
+      },
+      "upstream": [
+        "Switch:QuickWordsRest"
+      ]
+    },
+    "Switch:QuickWordsRest": {
+      "downstream": [
+        "Agent:OddDoorsHang",
+        "Retrieval:StrictMomentsWink",
+        "Retrieval:FiveCamerasWear",
+        "Retrieval:DarkGlassesFlash",
+        "Retrieval:FluffyMammalsSink",
+        "Retrieval:NineRoomsSend",
+        "Retrieval:CleverCarsAccept",
+        "Agent:OddDoorsHang"
+      ],
+      "obj": {
+        "component_name": "Switch",
+        "params": {
+          "conditions": [
+            {
+              "items": [
+                {
+                  "cpn_id": "Agent:EveryBreadsThink@content",
+                  "operator": "contains",
+                  "value": "SEMANTIC"
+                }
+              ],
+              "logical_operator": "and",
+              "to": [
+                "Agent:OddDoorsHang"
+              ]
+            },
+            {
+              "items": [
+                {
+                  "cpn_id": "Agent:EveryBreadsThink@content",
+                  "operator": "contains",
+                  "value": "SQL"
+                }
+              ],
+              "logical_operator": "and",
+              "to": [
+                "Retrieval:StrictMomentsWink",
+                "Retrieval:FiveCamerasWear",
+                "Retrieval:DarkGlassesFlash"
+              ]
+            },
+            {
+              "items": [
+                {
+                  "cpn_id": "Agent:EveryBreadsThink@content",
+                  "operator": "contains",
+                  "value": "HYBRID"
+                }
+              ],
+              "logical_operator": "and",
+              "to": [
+                "Retrieval:FluffyMammalsSink",
+                "Retrieval:NineRoomsSend",
+                "Retrieval:CleverCarsAccept"
+              ]
+            }
+          ],
+          "end_cpn_ids": [
+            "Agent:OddDoorsHang"
+          ]
+        }
+      },
+      "upstream": [
+        "Agent:EveryBreadsThink"
+      ]
+    },
+    "begin": {
+      "downstream": [
+        "Agent:EveryBreadsThink"
+      ],
+      "obj": {
+        "component_name": "Begin",
+        "params": {
+          "enablePrologue": true,
+          "inputs": {},
+          "mode": "conversational",
+          "outputs": {},
+          "prologue": "Гибридный поиск (RAG / SQL / SQL + RAG)  по всей базе знаний Redmine:\nвсе проекты (задачи + wiki) без вложений"
+        }
+      },
+      "upstream": []
+    }
+  },
+  "globals": {
+    "sys.conversation_turns": 0,
+    "sys.date": "",
+    "sys.files": [],
+    "sys.history": [],
+    "sys.query": "",
+    "sys.user_id": ""
+  },
+  "graph": {
+    "edges": [
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__beginstart-Agent:EveryBreadsThinkend",
+        "source": "begin",
+        "sourceHandle": "start",
+        "target": "Agent:EveryBreadsThink",
+        "targetHandle": "end"
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Agent:EveryBreadsThinkstart-Switch:QuickWordsRestend",
+        "source": "Agent:EveryBreadsThink",
+        "sourceHandle": "start",
+        "target": "Switch:QuickWordsRest",
+        "targetHandle": "end"
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Retrieval:StrictMomentsWinkstart-Agent:GreatTurkeysEnterend",
+        "source": "Retrieval:StrictMomentsWink",
+        "sourceHandle": "start",
+        "target": "Agent:GreatTurkeysEnter",
+        "targetHandle": "end"
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Retrieval:FiveCamerasWearstart-Agent:GreatTurkeysEnterend",
+        "markerEnd": "logo",
+        "source": "Retrieval:FiveCamerasWear",
+        "sourceHandle": "start",
+        "target": "Agent:GreatTurkeysEnter",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Retrieval:DarkGlassesFlashstart-Agent:GreatTurkeysEnterend",
+        "markerEnd": "logo",
+        "source": "Retrieval:DarkGlassesFlash",
+        "sourceHandle": "start",
+        "target": "Agent:GreatTurkeysEnter",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Switch:QuickWordsRestCase 1-Agent:OddDoorsHangend",
+        "markerEnd": "logo",
+        "source": "Switch:QuickWordsRest",
+        "sourceHandle": "Case 1",
+        "target": "Agent:OddDoorsHang",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Agent:YoungDragonsCleanstart-ExeSQL:YummyLizardsSellend",
+        "markerEnd": "logo",
+        "source": "Agent:YoungDragonsClean",
+        "sourceHandle": "start",
+        "target": "ExeSQL:YummyLizardsSell",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Retrieval:CleverCarsAcceptstart-Agent:YoungDragonsCleanend",
+        "markerEnd": "logo",
+        "source": "Retrieval:CleverCarsAccept",
+        "sourceHandle": "start",
+        "target": "Agent:YoungDragonsClean",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Retrieval:NineRoomsSendstart-Agent:YoungDragonsCleanend",
+        "markerEnd": "logo",
+        "source": "Retrieval:NineRoomsSend",
+        "sourceHandle": "start",
+        "target": "Agent:YoungDragonsClean",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Retrieval:FluffyMammalsSinkstart-Agent:YoungDragonsCleanend",
+        "markerEnd": "logo",
+        "source": "Retrieval:FluffyMammalsSink",
+        "sourceHandle": "start",
+        "target": "Agent:YoungDragonsClean",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Switch:QuickWordsRestCase 2-Retrieval:StrictMomentsWinkend",
+        "markerEnd": "logo",
+        "source": "Switch:QuickWordsRest",
+        "sourceHandle": "Case 2",
+        "target": "Retrieval:StrictMomentsWink",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Switch:QuickWordsRestCase 2-Retrieval:FiveCamerasWearend",
+        "markerEnd": "logo",
+        "source": "Switch:QuickWordsRest",
+        "sourceHandle": "Case 2",
+        "target": "Retrieval:FiveCamerasWear",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Switch:QuickWordsRestCase 2-Retrieval:DarkGlassesFlashend",
+        "markerEnd": "logo",
+        "source": "Switch:QuickWordsRest",
+        "sourceHandle": "Case 2",
+        "target": "Retrieval:DarkGlassesFlash",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Switch:QuickWordsRestCase 3-Retrieval:FluffyMammalsSinkend",
+        "markerEnd": "logo",
+        "source": "Switch:QuickWordsRest",
+        "sourceHandle": "Case 3",
+        "target": "Retrieval:FluffyMammalsSink",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Switch:QuickWordsRestCase 3-Retrieval:NineRoomsSendend",
+        "markerEnd": "logo",
+        "source": "Switch:QuickWordsRest",
+        "sourceHandle": "Case 3",
+        "target": "Retrieval:NineRoomsSend",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Switch:QuickWordsRestCase 3-Retrieval:CleverCarsAcceptend",
+        "markerEnd": "logo",
+        "source": "Switch:QuickWordsRest",
+        "sourceHandle": "Case 3",
+        "target": "Retrieval:CleverCarsAccept",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Switch:QuickWordsRestend_cpn_ids-Agent:OddDoorsHangend",
+        "markerEnd": "logo",
+        "source": "Switch:QuickWordsRest",
+        "sourceHandle": "end_cpn_ids",
+        "target": "Agent:OddDoorsHang",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__ExeSQL:YummyLizardsSellstart-Agent:SmallJokesScreamend",
+        "markerEnd": "logo",
+        "source": "ExeSQL:YummyLizardsSell",
+        "sourceHandle": "start",
+        "target": "Agent:SmallJokesScream",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Agent:GreatTurkeysEnterstart-ExeSQL:FreshHatsProveend",
+        "markerEnd": "logo",
+        "source": "Agent:GreatTurkeysEnter",
+        "sourceHandle": "start",
+        "target": "ExeSQL:FreshHatsProve",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__ExeSQL:FreshHatsProvestart-Agent:SwiftTreesLickend",
+        "markerEnd": "logo",
+        "source": "ExeSQL:FreshHatsProve",
+        "sourceHandle": "start",
+        "target": "Agent:SwiftTreesLick",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Agent:SmallJokesScreamtool-Tool:LooseRocksRelateend",
+        "source": "Agent:SmallJokesScream",
+        "sourceHandle": "tool",
+        "target": "Tool:LooseRocksRelate",
+        "targetHandle": "end"
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Agent:OddDoorsHangtool-Tool:FineSchoolsServeend",
+        "source": "Agent:OddDoorsHang",
+        "sourceHandle": "tool",
+        "target": "Tool:FineSchoolsServe",
+        "targetHandle": "end"
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Agent:OddDoorsHangstart-Message:CuddlyShoesJogend",
+        "markerEnd": "logo",
+        "source": "Agent:OddDoorsHang",
+        "sourceHandle": "start",
+        "target": "Message:CuddlyShoesJog",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Agent:SwiftTreesLickstart-Message:PlentyMugsMakeend",
+        "markerEnd": "logo",
+        "source": "Agent:SwiftTreesLick",
+        "sourceHandle": "start",
+        "target": "Message:PlentyMugsMake",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Agent:SmallJokesScreamstart-Message:ShaggyTipsDressend",
+        "markerEnd": "logo",
+        "source": "Agent:SmallJokesScream",
+        "sourceHandle": "start",
+        "target": "Message:ShaggyTipsDress",
+        "targetHandle": "end",
+        "type": "buttonEdge",
+        "zIndex": 1001
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Agent:EveryBreadsThinktool-Tool:LoudAreasChewend",
+        "source": "Agent:EveryBreadsThink",
+        "sourceHandle": "tool",
+        "target": "Tool:LoudAreasChew",
+        "targetHandle": "end"
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Agent:GreatTurkeysEntertool-Tool:SourStatesAskend",
+        "source": "Agent:GreatTurkeysEnter",
+        "sourceHandle": "tool",
+        "target": "Tool:SourStatesAsk",
+        "targetHandle": "end"
+      },
+      {
+        "id": "xy-edge__Agent:YoungDragonsCleantool-Tool:SwiftSunsJamend",
+        "source": "Agent:YoungDragonsClean",
+        "sourceHandle": "tool",
+        "target": "Tool:SwiftSunsJam",
+        "targetHandle": "end"
+      },
+      {
+        "data": {
+          "isHovered": false
+        },
+        "id": "xy-edge__Agent:SwiftTreesLicktool-Tool:BoldWebsBetend",
+        "source": "Agent:SwiftTreesLick",
+        "sourceHandle": "tool",
+        "target": "Tool:BoldWebsBet",
+        "targetHandle": "end"
+      }
+    ],
+    "nodes": [
+      {
+        "data": {
+          "form": {
+            "enablePrologue": true,
+            "inputs": {},
+            "mode": "conversational",
+            "outputs": {},
+            "prologue": "Гибридный поиск (RAG / SQL / SQL + RAG)  по всей базе знаний Redmine (до 22.08.2026г):\nвсе проекты (задачи + wiki) без вложений"
+          },
+          "label": "Begin",
+          "name": "begin"
+        },
+        "dragging": false,
+        "id": "begin",
+        "measured": {
+          "height": 82,
+          "width": 200
+        },
+        "position": {
+          "x": -43.75472358573609,
+          "y": 397.0932966036293
+        },
+        "selected": false,
+        "sourcePosition": "left",
+        "targetPosition": "right",
+        "type": "beginNode"
+      },
+      {
+        "data": {
+          "form": {
+            "cite": false,
+            "delay_after_error": 1,
+            "description": "",
+            "exception_default_value": "",
+            "exception_goto": [],
+            "exception_method": "",
+            "frequencyPenaltyEnabled": false,
+            "frequency_penalty": 0,
+            "llm_id": "efca8806adc011f1a79eebaa53515a81",
+            "maxTokensEnabled": true,
+            "max_retries": 1,
+            "max_rounds": 1,
+            "max_tokens": 64,
+            "mcp": [],
+            "message_history_window_size": 12,
+            "outputs": {
+              "content": {
+                "type": "string",
+                "value": ""
+              }
+            },
+            "parameter": "Custom",
+            "presencePenaltyEnabled": false,
+            "presence_penalty": 0,
+            "prompts": [
+              {
+                "content": " {sys.query}",
+                "role": "user"
+              }
+            ],
+            "showStructuredOutput": false,
+            "sys_prompt": "Ты классифицируешь запросы пользователей системы поиска по данным Redmine.\r\n\r\nОпредели, какой режим обработки нужен для ответа.\r\n\r\nSEMANTIC:\r\nИспользуй, если ответ находится в текстовом содержимом Redmine:\r\nwiki, описания задач, комментарии, Markdown-документы и т.п.\r\n\r\nПримеры:\r\n- Как настроить датчик XX?\r\n- Какие фильтры аномалий применяются для фильтрации данных?\r\n- Как работает модуль авторизации?\r\n- Что написано в wiki про обработку ошибок?\r\n\r\nSQL:\r\nИспользуй, если требуется точная структурированная информация из PostgreSQL:\r\n- количество;\r\n- COUNT, SUM, AVG, MIN, MAX;\r\n- статусы;\r\n- даты;\r\n- авторы;\r\n- проекты;\r\n- списки задач;\r\n- связи между сущностями.\r\n\r\nПримеры:\r\n- Сколько открытых задач у Иванова?\r\n- Сколько задач в проекте УУ?\r\n- Какие задачи создал Иванов?\r\n- Когда Иванов последний раз публиковал комментарий?\r\n\r\nHYBRID:\r\nИспользуй, если PostgreSQL нужен для определения конкретных сущностей\r\nили структурированных данных, а текстовые документы нужны для описания,\r\nобъяснения или анализа этих сущностей.\r\n\r\nПримеры:\r\n- Какие открытые задачи проекта УУ связаны с фильтрами аномалий?\r\n- Найди задачи Иванова по датчику XX и кратко опиши проблемы.\r\n- Сколько задач связано с датчиком XX и что в них написано?\r\n\r\nПравила:\r\n\r\n1. Выбери только один класс.\r\n2. Не отвечай на вопрос пользователя.\r\n3. Верни только одно слово без пояснений.\r\n\r\nДопустимые ответы:\r\n\r\nSEMANTIC\r\nSQL\r\nHYBRID",
+            "temperature": 0.1,
+            "temperatureEnabled": true,
+            "thinking": "disabled",
+            "tools": [
+              {
+                "component_name": "Retrieval",
+                "id": "Retrieval:FreeOlivesPump",
+                "name": "Retrieval_0",
+                "params": {
+                  "cross_languages": [],
+                  "description": "",
+                  "empty_response": "",
+                  "kb_ids": [],
+                  "keywords_similarity_weight": 0.7,
+                  "outputs": {
+                    "formalized_content": {
+                      "type": "string",
+                      "value": ""
+                    },
+                    "json": {
+                      "type": "Array<Object>",
+                      "value": []
+                    }
+                  },
+                  "rerank_id": "",
+                  "retrieval_from": "dataset",
+                  "similarity_threshold": 0.2,
+                  "top_k": 1024,
+                  "top_n": 8
+                }
+              }
+            ],
+            "topPEnabled": false,
+            "top_p": 0.75,
+            "user_prompt": "",
+            "visual_files_var": ""
+          },
+          "label": "Agent",
+          "name": "Agent_classifire"
+        },
+        "dragging": false,
+        "id": "Agent:EveryBreadsThink",
+        "measured": {
+          "height": 80,
+          "width": 200
+        },
+        "position": {
+          "x": 247.9571327513434,
+          "y": 396.1225246721437
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "agentNode"
+      },
+      {
+        "data": {
+          "form": {
+            "conditions": [
+              {
+                "items": [
+                  {
+                    "cpn_id": "Agent:EveryBreadsThink@content",
+                    "operator": "contains",
+                    "value": "SEMANTIC"
+                  }
+                ],
+                "logical_operator": "and",
+                "to": [
+                  "Agent:OddDoorsHang"
+                ]
+              },
+              {
+                "items": [
+                  {
+                    "cpn_id": "Agent:EveryBreadsThink@content",
+                    "operator": "contains",
+                    "value": "SQL"
+                  }
+                ],
+                "logical_operator": "and",
+                "to": [
+                  "Retrieval:StrictMomentsWink",
+                  "Retrieval:FiveCamerasWear",
+                  "Retrieval:DarkGlassesFlash"
+                ]
+              },
+              {
+                "items": [
+                  {
+                    "cpn_id": "Agent:EveryBreadsThink@content",
+                    "operator": "contains",
+                    "value": "HYBRID"
+                  }
+                ],
+                "logical_operator": "and",
+                "to": [
+                  "Retrieval:FluffyMammalsSink",
+                  "Retrieval:NineRoomsSend",
+                  "Retrieval:CleverCarsAccept"
+                ]
+              }
+            ],
+            "end_cpn_ids": [
+              "Agent:OddDoorsHang"
+            ]
+          },
+          "label": "Switch",
+          "name": "Switch"
+        },
+        "dragging": false,
+        "id": "Switch:QuickWordsRest",
+        "measured": {
+          "height": 318,
+          "width": 200
+        },
+        "position": {
+          "x": 515.1033349824754,
+          "y": 284.3238119466848
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "switchNode"
+      },
+      {
+        "data": {
+          "form": {
+            "cite": true,
+            "delay_after_error": 1,
+            "description": "",
+            "exception_default_value": "",
+            "exception_goto": [],
+            "exception_method": "",
+            "frequencyPenaltyEnabled": true,
+            "frequency_penalty": 0,
+            "llm_id": "efca8806adc011f1a79eebaa53515a81",
+            "maxTokensEnabled": true,
+            "max_retries": 3,
+            "max_rounds": 1,
+            "max_tokens": 1024,
+            "mcp": [],
+            "message_history_window_size": 12,
+            "outputs": {
+              "content": {
+                "type": "string",
+                "value": ""
+              }
+            },
+            "presencePenaltyEnabled": true,
+            "presence_penalty": 0,
+            "prompts": [
+              {
+                "content": "  {sys.query}",
+                "role": "user"
+              }
+            ],
+            "showStructuredOutput": false,
+            "sys_prompt": "Ты отвечаешь на вопросы по базе знаний Redmine.\r\n\r\nИспользуй только информацию из предоставленного контекста.\r\n\r\nПравила:\r\n\r\n1. Не используй внешние знания.\r\n2. Не придумывай факты, значения, даты, имена и номера задач.\r\n3. Если контекст не содержит ответа, явно сообщи:\r\n   \"В найденных данных недостаточно информации для ответа.\"\r\n4. Если несколько фрагментов относятся к одному объекту,\r\n   объединяй их только если это следует из контекста.\r\n5. Различай факты из разных задач, проектов и пользователей.\r\n6. Если в контексте есть номер задачи, проект или автор,\r\n   сохраняй их точно.\r\n7. Отвечай на русском языке.\r\n8. Для технических вопросов используй структурированный ответ.\r\n9. Не пересказывай нерелевантный контекст.\r\n\r\nОтвет должен непосредственно отвечать на вопрос пользователя.",
+            "temperature": 0.1,
+            "temperatureEnabled": true,
+            "thinking": "disabled",
+            "tools": [
+              {
+                "component_name": "Retrieval",
+                "id": "Retrieval:FineGeckosRelax",
+                "name": "Retrieval_Redmine",
+                "params": {
+                  "cross_languages": [],
+                  "dataset_ids": [
+                    "27465568a10e11f19d0afbfcda4dce55"
+                  ],
+                  "description": "",
+                  "empty_response": "",
+                  "kb_ids": [],
+                  "keywords_similarity_weight": 0.3,
+                  "meta_data_filter": {
+                    "method": "auto"
+                  },
+                  "outputs": {
+                    "formalized_content": {
+                      "type": "string",
+                      "value": ""
+                    },
+                    "json": {
+                      "type": "Array<Object>",
+                      "value": []
+                    }
+                  },
+                  "rerank_id": "",
+                  "retrieval_from": "dataset",
+                  "similarity_threshold": 0.2,
+                  "top_k": 1024,
+                  "top_n": 8
+                }
+              }
+            ],
+            "topPEnabled": true,
+            "top_p": 0.3,
+            "user_prompt": "",
+            "visual_files_var": ""
+          },
+          "label": "Agent",
+          "name": "Semantic_search"
+        },
+        "dragging": false,
+        "id": "Agent:OddDoorsHang",
+        "measured": {
+          "height": 80,
+          "width": 200
+        },
+        "position": {
+          "x": 830.600566846908,
+          "y": 67.14972975247292
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "agentNode"
+      },
+      {
+        "data": {
+          "form": {
+            "cross_languages": [],
+            "dataset_ids": [
+              "8d4f781ca95111f19d0afbfcda4dce55"
+            ],
+            "empty_response": "",
+            "kb_ids": [],
+            "keywords_similarity_weight": 0.7,
+            "meta_data_filter": {},
+            "outputs": {
+              "formalized_content": {
+                "type": "string",
+                "value": ""
+              },
+              "json": {
+                "type": "Array<Object>",
+                "value": []
+              }
+            },
+            "query": "{sys.query}",
+            "rerank_id": "",
+            "retrieval_from": "dataset",
+            "similarity_threshold": 0.2,
+            "top_k": 1024,
+            "top_n": 2
+          },
+          "label": "Retrieval",
+          "name": "Schema SQL"
+        },
+        "dragging": false,
+        "id": "Retrieval:StrictMomentsWink",
+        "measured": {
+          "height": 90,
+          "width": 200
+        },
+        "position": {
+          "x": 821.8207536340041,
+          "y": 280.9722391423487
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "retrievalNode"
+      },
+      {
+        "data": {
+          "form": {
+            "cross_languages": [],
+            "dataset_ids": [
+              "26e4c3b4a95311f19d0afbfcda4dce55"
+            ],
+            "empty_response": "",
+            "kb_ids": [],
+            "keywords_similarity_weight": 0.5,
+            "meta_data_filter": {},
+            "outputs": {
+              "formalized_content": {
+                "type": "string",
+                "value": ""
+              },
+              "json": {
+                "type": "Array<Object>",
+                "value": []
+              }
+            },
+            "query": "{sys.query}",
+            "rerank_id": "",
+            "retrieval_from": "dataset",
+            "similarity_threshold": 0.2,
+            "top_k": 1024,
+            "top_n": 5
+          },
+          "label": "Retrieval",
+          "name": "Question to SQL"
+        },
+        "dragging": false,
+        "id": "Retrieval:FiveCamerasWear",
+        "measured": {
+          "height": 90,
+          "width": 200
+        },
+        "position": {
+          "x": 822.9743110874103,
+          "y": 381.439816499782
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "retrievalNode"
+      },
+      {
+        "data": {
+          "form": {
+            "cross_languages": [],
+            "dataset_ids": [
+              "73524de8a95311f19d0afbfcda4dce55"
+            ],
+            "empty_response": "",
+            "kb_ids": [],
+            "keywords_similarity_weight": 0.7,
+            "meta_data_filter": {},
+            "outputs": {
+              "formalized_content": {
+                "type": "string",
+                "value": ""
+              },
+              "json": {
+                "type": "Array<Object>",
+                "value": []
+              }
+            },
+            "query": "{sys.query}",
+            "rerank_id": "",
+            "retrieval_from": "dataset",
+            "similarity_threshold": 0.2,
+            "top_k": 1024,
+            "top_n": 4
+          },
+          "label": "Retrieval",
+          "name": "Database Description SQL"
+        },
+        "dragging": false,
+        "id": "Retrieval:DarkGlassesFlash",
+        "measured": {
+          "height": 90,
+          "width": 200
+        },
+        "position": {
+          "x": 818.5844923946187,
+          "y": 478.42714180917653
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "retrievalNode"
+      },
+      {
+        "data": {
+          "form": {
+            "content": [
+              "  {Agent:OddDoorsHang@content}"
+            ]
+          },
+          "label": "Message",
+          "name": "Semantic_answer"
+        },
+        "dragging": false,
+        "id": "Message:CuddlyShoesJog",
+        "measured": {
+          "height": 86,
+          "width": 200
+        },
+        "position": {
+          "x": 1165.2010644225657,
+          "y": 64.95023289185372
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "messageNode"
+      },
+      {
+        "data": {
+          "form": {
+            "cite": true,
+            "delay_after_error": 1,
+            "description": "",
+            "exception_default_value": "",
+            "exception_goto": [],
+            "exception_method": "",
+            "frequencyPenaltyEnabled": true,
+            "frequency_penalty": 0,
+            "llm_id": "efca8806adc011f1a79eebaa53515a81",
+            "maxTokensEnabled": true,
+            "max_retries": 3,
+            "max_rounds": 1,
+            "max_tokens": 2048,
+            "mcp": [],
+            "message_history_window_size": 12,
+            "outputs": {
+              "content": {
+                "type": "string",
+                "value": ""
+              }
+            },
+            "parameter": "Custom",
+            "presencePenaltyEnabled": true,
+            "presence_penalty": 0,
+            "prompts": [
+              {
+                "content": "USER QUESTION:\r\n{sys.query} \r\n\r {Retrieval:StrictMomentsWink@formalized_content}\n {Retrieval:DarkGlassesFlash@formalized_content}\n {Retrieval:FiveCamerasWear@formalized_content}\n\r",
+                "role": "user"
+              }
+            ],
+            "showStructuredOutput": false,
+            "sys_prompt": "Ты являешься Text-to-SQL генератором для PostgreSQL базы данных Redmine.\r\n\r\nТвоя задача — преобразовать вопрос пользователя в ОДИН корректный\r\nPostgreSQL SELECT-запрос.\r\n\r\nИСТОЧНИК ИСТИНЫ:\r\n\r\n1. DATABASE SCHEMA\r\n2. DATABASE DESCRIPTION\r\n3. SIMILAR QUESTION → SQL EXAMPLES\r\n\r\nИспользуй только таблицы и поля, присутствующие в DATABASE SCHEMA.\r\n\r\nПРАВИЛА:\r\n\r\n1. Верни только SQL-запрос.\r\n2. Не используй Markdown.\r\n3. Не добавляй пояснения.\r\n4. Разрешён только SELECT.\r\n5. Запрещены:\r\n   INSERT\r\n   UPDATE\r\n   DELETE\r\n   DROP\r\n   ALTER\r\n   CREATE\r\n   TRUNCATE\r\n   GRANT\r\n   REVOKE\r\n\r\n6. Никогда не придумывай:\r\n   - таблицы;\r\n   - поля;\r\n   - значения;\r\n   - ID;\r\n   - связи.\r\n\r\n7. Используй явные JOIN ... ON ....\r\n8. Корректно обрабатывай NULL.\r\n9. Для количества используй COUNT().\r\n10. Для агрегатов используй GROUP BY.\r\n11. Для поиска последней записи используй ORDER BY ... DESC\r\n    и LIMIT 1 либо MAX(), если это соответствует вопросу.\r\n12. Для вопросов \"открытые задачи\" используй фактическое поле\r\n    статуса согласно DATABASE DESCRIPTION.\r\n13. Для поиска пользователя по ФИО не придумывай ID.\r\n    Используй соответствующие поля users согласно schema.\r\n14. Если возвращается список, используй LIMIT.\r\n15. Не используй SELECT * без необходимости.\r\n16. Выбирай только столбцы, необходимые для ответа.\r\n17. Избегай дублирования строк при JOIN.\r\n18. Если для ответа необходимо несколько связанных таблиц,\r\n    используй соответствующие JOIN.\r\n19. Если данных в схеме недостаточно для ответа,\r\n    верни:\r\n\r\nSELECT 'INSUFFICIENT_DATA' AS error;\r\n\r\n20. SQL должен быть валидным PostgreSQL.\r\n\r\nПЕРЕД ФОРМИРОВАНИЕМ SQL:\r\n\r\n- определи сущности из вопроса;\r\n- определи необходимые таблицы;\r\n- проверь связи между таблицами;\r\n- проверь значения статусов;\r\n- проверь поля дат;\r\n- только после этого сформируй запрос.\n\r\nДля поиска подзадач используйте таблицу issue_relations:\r\n- issue_id - ID родительской задачи\r\n- issue_to_id - ID связанной задачи (подзадачи)\r\n- relation_type - тип связи (например, 'relates', 'blocks', 'precedes')\r\n\r\nПример запроса для подзадач:\r\nSELECT ir.relation_type, i.id, i.subject, i.status \r\nFROM issue_relations ir \r\nJOIN issues i ON ir.issue_to_id = i.id \r\nWHERE ir.issue_id = {parent_issue_id} \r\nAND i.is_closed = false\n\r\nВерни только SQL. Не добавляй пробелы и переносы строк в начале ответа.",
+            "temperature": 0.05,
+            "temperatureEnabled": true,
+            "thinking": "disabled",
+            "tools": [
+              {
+                "component_name": "Retrieval",
+                "id": "Retrieval:CuddlyNightsShave",
+                "name": "Retrieval_0",
+                "params": {
+                  "cross_languages": [],
+                  "description": "",
+                  "empty_response": "",
+                  "kb_ids": [],
+                  "keywords_similarity_weight": 0.7,
+                  "outputs": {
+                    "formalized_content": {
+                      "type": "string",
+                      "value": ""
+                    },
+                    "json": {
+                      "type": "Array<Object>",
+                      "value": []
+                    }
+                  },
+                  "rerank_id": "",
+                  "retrieval_from": "dataset",
+                  "similarity_threshold": 0.2,
+                  "top_k": 1024,
+                  "top_n": 8
+                }
+              }
+            ],
+            "topPEnabled": false,
+            "top_p": 0.75,
+            "user_prompt": "",
+            "visual_files_var": ""
+          },
+          "label": "Agent",
+          "name": "SQL generator"
+        },
+        "dragging": false,
+        "id": "Agent:GreatTurkeysEnter",
+        "measured": {
+          "height": 80,
+          "width": 200
+        },
+        "position": {
+          "x": 1071.5133732083216,
+          "y": 382.78221835674094
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "agentNode"
+      },
+      {
+        "data": {
+          "form": {
+            "database": "RedProxyMine",
+            "db_type": "postgres",
+            "host": "192.168...",
+            "max_records": 200,
+            "outputs": {
+              "formalized_content": {
+                "type": "string",
+                "value": ""
+              },
+              "json": {
+                "type": "Array<Object>",
+                "value": []
+              }
+            },
+            "password": "password",
+            "port": 5432,
+            "sql": " {Agent:GreatTurkeysEnter@content}",
+            "username": "username"
+          },
+          "label": "ExeSQL",
+          "name": "Execute SQL"
+        },
+        "dragging": false,
+        "id": "ExeSQL:FreshHatsProve",
+        "measured": {
+          "height": 50,
+          "width": 200
+        },
+        "position": {
+          "x": 1306.8504017670289,
+          "y": 398.08241401194664
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "ragNode"
+      },
+      {
+        "data": {
+          "form": {
+            "cite": true,
+            "delay_after_error": 1,
+            "description": "",
+            "exception_default_value": "",
+            "exception_goto": [],
+            "exception_method": "",
+            "frequencyPenaltyEnabled": true,
+            "frequency_penalty": 0,
+            "llm_id": "efca8806adc011f1a79eebaa53515a81",
+            "maxTokensEnabled": true,
+            "max_retries": 3,
+            "max_rounds": 1,
+            "max_tokens": 1024,
+            "mcp": [],
+            "message_history_window_size": 12,
+            "outputs": {
+              "content": {
+                "type": "string",
+                "value": ""
+              }
+            },
+            "parameter": "Custom",
+            "presencePenaltyEnabled": true,
+            "presence_penalty": 0,
+            "prompts": [
+              {
+                "content": "USER QUESTION:\r\n{sys.query}\r\n\r {ExeSQL:FreshHatsProve@json}",
+                "role": "user"
+              }
+            ],
+            "showStructuredOutput": false,
+            "sys_prompt": "Ты формируешь окончательный ответ на вопрос пользователя\r\nна основе результата PostgreSQL.\r\n\r\nИспользуй ТОЛЬКО результат SQL.\r\n\r\nПравила:\r\n\r\n1. Не придумывай значения.\r\n2. Не пересчитывай данные самостоятельно, если SQL уже выполнил\r\n   необходимую агрегацию.\r\n3. Сохраняй точные числа, даты, имена и идентификаторы.\r\n4. Если результат содержит несколько строк — представь их\r\n   структурированно.\r\n5. Если SQL вернул 0 строк, сообщи об отсутствии записей.\r\n6. Если SQL вернул ошибку или INSUFFICIENT_DATA,\r\n   объясни это пользователю понятным языком.\r\n7. Не показывай SQL, если пользователь явно его не запросил.\r\n8. Отвечай на русском языке.\r\n9. Отвечай кратко и непосредственно.\r\n\r\nВажно:\r\nSQL является источником истины для чисел, дат, статусов и других\r\nструктурированных данных.",
+            "temperature": 0.05,
+            "temperatureEnabled": true,
+            "thinking": "disabled",
+            "tools": [
+              {
+                "component_name": "Retrieval",
+                "id": "Retrieval:ThirtyKnivesThink",
+                "name": "Retrieval_0",
+                "params": {
+                  "cross_languages": [],
+                  "description": "",
+                  "empty_response": "",
+                  "kb_ids": [],
+                  "keywords_similarity_weight": 0.7,
+                  "outputs": {
+                    "formalized_content": {
+                      "type": "string",
+                      "value": ""
+                    },
+                    "json": {
+                      "type": "Array<Object>",
+                      "value": []
+                    }
+                  },
+                  "rerank_id": "",
+                  "retrieval_from": "dataset",
+                  "similarity_threshold": 0.2,
+                  "top_k": 1024,
+                  "top_n": 8
+                }
+              }
+            ],
+            "topPEnabled": true,
+            "top_p": 0.3,
+            "user_prompt": "",
+            "visual_files_var": ""
+          },
+          "label": "Agent",
+          "name": "SQL answer"
+        },
+        "dragging": false,
+        "id": "Agent:SwiftTreesLick",
+        "measured": {
+          "height": 80,
+          "width": 200
+        },
+        "position": {
+          "x": 1541.8035853993338,
+          "y": 384.0186401199816
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "agentNode"
+      },
+      {
+        "data": {
+          "form": {
+            "cross_languages": [],
+            "dataset_ids": [
+              "8d4f781ca95111f19d0afbfcda4dce55"
+            ],
+            "empty_response": "",
+            "kb_ids": [],
+            "keywords_similarity_weight": 0.7,
+            "meta_data_filter": {},
+            "outputs": {
+              "formalized_content": {
+                "type": "string",
+                "value": ""
+              },
+              "json": {
+                "type": "Array<Object>",
+                "value": []
+              }
+            },
+            "query": "{sys.query}",
+            "rerank_id": "",
+            "retrieval_from": "dataset",
+            "similarity_threshold": 0.2,
+            "top_k": 1024,
+            "top_n": 8
+          },
+          "label": "Retrieval",
+          "name": "Schema HYBRID"
+        },
+        "dragging": false,
+        "id": "Retrieval:FluffyMammalsSink",
+        "measured": {
+          "height": 90,
+          "width": 200
+        },
+        "position": {
+          "x": 819.7782839641789,
+          "y": 610.3463783762037
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "retrievalNode"
+      },
+      {
+        "data": {
+          "form": {
+            "cross_languages": [],
+            "dataset_ids": [
+              "26e4c3b4a95311f19d0afbfcda4dce55"
+            ],
+            "empty_response": "",
+            "kb_ids": [],
+            "keywords_similarity_weight": 0.7,
+            "meta_data_filter": {},
+            "outputs": {
+              "formalized_content": {
+                "type": "string",
+                "value": ""
+              },
+              "json": {
+                "type": "Array<Object>",
+                "value": []
+              }
+            },
+            "query": "{sys.query}",
+            "rerank_id": "",
+            "retrieval_from": "dataset",
+            "similarity_threshold": 0.2,
+            "top_k": 1024,
+            "top_n": 8
+          },
+          "label": "Retrieval",
+          "name": "Question to SQL HYBRID"
+        },
+        "dragging": false,
+        "id": "Retrieval:NineRoomsSend",
+        "measured": {
+          "height": 90,
+          "width": 200
+        },
+        "position": {
+          "x": 817.5893799683253,
+          "y": 710.0715805126176
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "retrievalNode"
+      },
+      {
+        "data": {
+          "form": {
+            "cross_languages": [],
+            "dataset_ids": [
+              "73524de8a95311f19d0afbfcda4dce55"
+            ],
+            "empty_response": "",
+            "kb_ids": [],
+            "keywords_similarity_weight": 0.7,
+            "meta_data_filter": {},
+            "outputs": {
+              "formalized_content": {
+                "type": "string",
+                "value": ""
+              },
+              "json": {
+                "type": "Array<Object>",
+                "value": []
+              }
+            },
+            "query": "{sys.query}",
+            "rerank_id": "",
+            "retrieval_from": "dataset",
+            "similarity_threshold": 0.2,
+            "top_k": 1024,
+            "top_n": 8
+          },
+          "label": "Retrieval",
+          "name": "Database Description HYBRID"
+        },
+        "dragging": false,
+        "id": "Retrieval:CleverCarsAccept",
+        "measured": {
+          "height": 90,
+          "width": 200
+        },
+        "position": {
+          "x": 817.8044151914609,
+          "y": 809.9805697823829
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "retrievalNode"
+      },
+      {
+        "data": {
+          "form": {
+            "cite": true,
+            "delay_after_error": 1,
+            "description": "",
+            "exception_default_value": "",
+            "exception_goto": [],
+            "exception_method": "",
+            "frequencyPenaltyEnabled": false,
+            "frequency_penalty": 0.7,
+            "llm_id": "efca8806adc011f1a79eebaa53515a81",
+            "maxTokensEnabled": true,
+            "max_retries": 3,
+            "max_rounds": 1,
+            "max_tokens": 1024,
+            "mcp": [],
+            "message_history_window_size": 12,
+            "outputs": {
+              "content": {
+                "type": "string",
+                "value": ""
+              }
+            },
+            "presencePenaltyEnabled": false,
+            "presence_penalty": 0.4,
+            "prompts": [
+              {
+                "content": " ORIGINAL QUESTION:\n{sys.query}\n{ExeSQL:YummyLizardsSell@formalized_content}",
+                "role": "user"
+              }
+            ],
+            "showStructuredOutput": false,
+            "sys_prompt": "Ты финальный ассистент системы Hybrid Redmine Search.\r\n\r\nТебе предоставлены три источника:\r\n\r\n1. ORIGINAL QUESTION\r\n   Исходный вопрос пользователя.\r\n\r\n2. SQL RESULT\r\n   Структурированные данные PostgreSQL.\r\n\r\n3. SEMANTIC CONTEXT\r\n   Текстовые данные из Redmine.\r\n\r\nИспользуй их следующим образом:\r\n\r\nSQL RESULT является источником истины для:\r\n- количества;\r\n- дат;\r\n- статусов;\r\n- идентификаторов;\r\n- названий проектов;\r\n- пользователей;\r\n- связей между структурированными сущностями.\r\n\r\nSEMANTIC CONTEXT является источником истины для:\r\n- описаний;\r\n- содержания задач;\r\n- комментариев;\r\n- wiki;\r\n- технических объяснений;\r\n- причин и деталей проблем.\r\n\r\nНе выдумывай отсутствующие сведения.\r\n\r\nЕсли SQL RESULT и SEMANTIC CONTEXT противоречат друг другу:\r\n1. для структурированных данных доверяй SQL;\r\n2. для текстового содержания используй semantic context;\r\n3. явно сообщи о противоречии, если оно влияет на ответ.\r\n\r\nЕсли SQL определил конкретные задачи, используй semantic context\r\nдля описания именно этих задач, а не других похожих задач.\r\n\r\nНе подменяй найденные SQL-сущности семантически похожими сущностями.\r\n\r\nЕсли данных недостаточно, явно сообщи об этом.\r\n\r\nОтвечай на русском языке.\r\n\r\nДавай непосредственный ответ на вопрос пользователя.\r\nНе показывай SQL и внутренние этапы работы, если пользователь\r\nявно их не запросил.",
+            "temperature": 0.1,
+            "temperatureEnabled": true,
+            "thinking": "disabled",
+            "tools": [
+              {
+                "component_name": "Retrieval",
+                "id": "Retrieval:SevenMeteorsWalk",
+                "name": "Retrieval_Redmine",
+                "params": {
+                  "cross_languages": [],
+                  "dataset_ids": [
+                    "27465568a10e11f19d0afbfcda4dce55"
+                  ],
+                  "description": "",
+                  "empty_response": "",
+                  "kb_ids": [],
+                  "keywords_similarity_weight": 0.5,
+                  "meta_data_filter": {
+                    "method": "auto"
+                  },
+                  "outputs": {
+                    "formalized_content": {
+                      "type": "string",
+                      "value": ""
+                    },
+                    "json": {
+                      "type": "Array<Object>",
+                      "value": []
+                    }
+                  },
+                  "rerank_id": "",
+                  "retrieval_from": "dataset",
+                  "similarity_threshold": 0.2,
+                  "top_k": 1024,
+                  "top_n": 8
+                }
+              }
+            ],
+            "topPEnabled": false,
+            "top_p": 0.3,
+            "user_prompt": "",
+            "visual_files_var": ""
+          },
+          "label": "Agent",
+          "name": "RAG_HYBRID"
+        },
+        "dragging": false,
+        "id": "Agent:SmallJokesScream",
+        "measured": {
+          "height": 80,
+          "width": 200
+        },
+        "position": {
+          "x": 1548.525142159994,
+          "y": 708.6196820198477
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "agentNode"
+      },
+      {
+        "data": {
+          "form": {
+            "cite": true,
+            "delay_after_error": 1,
+            "description": "",
+            "exception_default_value": "",
+            "exception_goto": [],
+            "exception_method": "",
+            "frequencyPenaltyEnabled": true,
+            "frequency_penalty": 0,
+            "llm_id": "efca8806adc011f1a79eebaa53515a81",
+            "maxTokensEnabled": true,
+            "max_retries": 3,
+            "max_rounds": 1,
+            "max_tokens": 2048,
+            "mcp": [],
+            "message_history_window_size": 12,
+            "outputs": {
+              "content": {
+                "type": "string",
+                "value": ""
+              }
+            },
+            "parameter": "Custom",
+            "presencePenaltyEnabled": true,
+            "presence_penalty": 0,
+            "prompts": [
+              {
+                "content": "USER QUESTION:\r\n{sys.query}\r\n\r {Retrieval:FluffyMammalsSink@formalized_content}\n {Retrieval:CleverCarsAccept@formalized_content}\n {Retrieval:NineRoomsSend@formalized_content}",
+                "role": "user"
+              }
+            ],
+            "showStructuredOutput": false,
+            "sys_prompt": "Для HYBRID-запроса SQL должен в первую очередь определить\r\nконкретные структурированные сущности, которые будут использованы\r\nпоследующим семантическим поиском.\r\n\r\nЕсли вопрос касается задач, по возможности возвращай:\r\n\r\n- issue_id\r\n- project_id\r\n- author_id\r\n- assigned_to_id\r\n- subject\r\n- status\r\n- created_on\r\n- updated_on\r\n\r\nНе ограничивай SQL только COUNT(), если последующему RAG\r\nпонадобятся конкретные сущности для поиска текста.",
+            "temperature": 0.05,
+            "temperatureEnabled": true,
+            "thinking": "disabled",
+            "tools": [
+              {
+                "component_name": "Retrieval",
+                "id": "Retrieval:ColdMonthsCount",
+                "name": "Retrieval_0",
+                "params": {
+                  "cross_languages": [],
+                  "description": "",
+                  "empty_response": "",
+                  "kb_ids": [],
+                  "keywords_similarity_weight": 0.7,
+                  "outputs": {
+                    "formalized_content": {
+                      "type": "string",
+                      "value": ""
+                    },
+                    "json": {
+                      "type": "Array<Object>",
+                      "value": []
+                    }
+                  },
+                  "rerank_id": "",
+                  "retrieval_from": "dataset",
+                  "similarity_threshold": 0.2,
+                  "top_k": 1024,
+                  "top_n": 8
+                }
+              }
+            ],
+            "topPEnabled": false,
+            "top_p": 0.75,
+            "user_prompt": "",
+            "visual_files_var": ""
+          },
+          "label": "Agent",
+          "name": "SQL generator HYBRID"
+        },
+        "dragging": false,
+        "id": "Agent:YoungDragonsClean",
+        "measured": {
+          "height": 80,
+          "width": 200
+        },
+        "position": {
+          "x": 1060.8580098505104,
+          "y": 711.6365464030338
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "agentNode"
+      },
+      {
+        "data": {
+          "form": {
+            "database": "RedProxyMine",
+            "db_type": "postgres",
+            "host": "192.168...",
+            "max_records": 200,
+            "outputs": {
+              "formalized_content": {
+                "type": "string",
+                "value": ""
+              },
+              "json": {
+                "type": "Array<Object>",
+                "value": []
+              }
+            },
+            "password": "password",
+            "port": 5432,
+            "sql": " {Agent:YoungDragonsClean@content}",
+            "username": "username"
+          },
+          "label": "ExeSQL",
+          "name": "Execute SQL_HYBRID"
+        },
+        "dragging": false,
+        "id": "ExeSQL:YummyLizardsSell",
+        "measured": {
+          "height": 50,
+          "width": 200
+        },
+        "position": {
+          "x": 1307.198239839087,
+          "y": 724.1978665744049
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "ragNode"
+      },
+      {
+        "data": {
+          "form": {
+            "description": "This is an agent for a specific task.",
+            "user_prompt": "This is the order you need to send to the agent."
+          },
+          "label": "Tool",
+          "name": "flow.tool_0"
+        },
+        "dragging": false,
+        "id": "Tool:LooseRocksRelate",
+        "measured": {
+          "height": 50,
+          "width": 200
+        },
+        "position": {
+          "x": 1561.9329598317247,
+          "y": 817.8845103461554
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "toolNode"
+      },
+      {
+        "data": {
+          "form": {
+            "description": "This is an agent for a specific task.",
+            "user_prompt": "This is the order you need to send to the agent."
+          },
+          "label": "Tool",
+          "name": "flow.tool_1"
+        },
+        "dragging": false,
+        "id": "Tool:FineSchoolsServe",
+        "measured": {
+          "height": 50,
+          "width": 200
+        },
+        "position": {
+          "x": 846.6028968549244,
+          "y": 175.6489808213248
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "toolNode"
+      },
+      {
+        "data": {
+          "form": {
+            "content": [
+              "{Agent:SwiftTreesLick@content}"
+            ]
+          },
+          "label": "Message",
+          "name": "SQL_answer"
+        },
+        "dragging": false,
+        "id": "Message:PlentyMugsMake",
+        "measured": {
+          "height": 86,
+          "width": 200
+        },
+        "position": {
+          "x": 1789.8363749252576,
+          "y": 381.4114268056948
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "messageNode"
+      },
+      {
+        "data": {
+          "form": {
+            "content": [
+              " {Agent:SmallJokesScream@content}"
+            ]
+          },
+          "label": "Message",
+          "name": "HYBRID_answer"
+        },
+        "dragging": false,
+        "id": "Message:ShaggyTipsDress",
+        "measured": {
+          "height": 86,
+          "width": 200
+        },
+        "position": {
+          "x": 1815.0015769487572,
+          "y": 704.5942045471998
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "messageNode"
+      },
+      {
+        "data": {
+          "form": {
+            "description": "This is an agent for a specific task.",
+            "user_prompt": "This is the order you need to send to the agent."
+          },
+          "label": "Tool",
+          "name": "flow.tool_2"
+        },
+        "dragging": false,
+        "id": "Tool:LoudAreasChew",
+        "measured": {
+          "height": 50,
+          "width": 200
+        },
+        "position": {
+          "x": 248.2622860585822,
+          "y": 497.78861765233387
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "toolNode"
+      },
+      {
+        "data": {
+          "form": {
+            "description": "This is an agent for a specific task.",
+            "user_prompt": "This is the order you need to send to the agent."
+          },
+          "label": "Tool",
+          "name": "flow.tool_3"
+        },
+        "dragging": false,
+        "id": "Tool:SourStatesAsk",
+        "measured": {
+          "height": 50,
+          "width": 200
+        },
+        "position": {
+          "x": 1076.5133732083216,
+          "y": 481.78221835674094
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "toolNode"
+      },
+      {
+        "data": {
+          "form": {
+            "description": "This is an agent for a specific task.",
+            "user_prompt": "This is the order you need to send to the agent."
+          },
+          "label": "Tool",
+          "name": "flow.tool_4"
+        },
+        "dragging": false,
+        "id": "Tool:SwiftSunsJam",
+        "measured": {
+          "height": 50,
+          "width": 200
+        },
+        "position": {
+          "x": 1060.8580098505104,
+          "y": 809.6365464030338
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "toolNode"
+      },
+      {
+        "data": {
+          "form": {
+            "description": "This is an agent for a specific task.",
+            "user_prompt": "This is the order you need to send to the agent."
+          },
+          "label": "Tool",
+          "name": "flow.tool_5"
+        },
+        "dragging": false,
+        "id": "Tool:BoldWebsBet",
+        "measured": {
+          "height": 50,
+          "width": 200
+        },
+        "position": {
+          "x": 1543.2362065600962,
+          "y": 483.42979739312415
+        },
+        "selected": false,
+        "sourcePosition": "right",
+        "targetPosition": "left",
+        "type": "toolNode"
+      }
+    ]
+  },
+  "history": [],
+  "memory": [],
+  "messages": [],
+  "path": [],
+  "retrieval": [],
+  "task_id": "9faadd84b0f511f1a79eebaa53515a81",
+  "variables": []
+}

@@ -1,0 +1,44 @@
+Redmine Database Description (Денормализованная схема)
+
+Основные таблицы:
+ISSUES (issues) - Главная таблица задач. Все данные уже собраны в одну таблицу.
+- id (integer) - ID задачи
+- project_id (integer) - ID проекта
+- project_name (text) - Название проекта
+- tracker (text) - Тип задачи (например, Баг, Задача)
+- status (text) - Название статуса (например, "Новая", "В работе")
+- is_closed (boolean) - Закрыта ли задача (false = открытая, true = закрытая)
+- priority (text) - Приоритет
+- subject (text) - Тема задачи
+- description (text) - Описание
+- author_name (text) - Имя автора (не ID, а сразу текст!)
+- assignee_name (text) - Имя исполнителя (не ID, а сразу текст!)
+- created_on, updated_on (timestamp) - Даты
+- done_ratio (integer) - Процент выполнения
+
+PROJECTS (projects) - Проекты
+- id, identifier (текстовый код проекта, например 'eily.acuario'), name, status, is_archived
+
+JOURNALS (journals) - Комментарии и история
+- id, issue_id, user_name, notes (текст комментария), created_on, private_notes
+
+ATTACHMENTS (attachments) - Вложения
+- id, issue_id, filename, filesize, author_name, created_on
+
+ISSUE_RELATIONS (issue_relations) - Связи между задачами
+- id - ID связи
+- issue_id - ID родительской задачи
+- relation_type - тип связи (relates, blocks, precedes, follows, duplicates, blocks)
+- issue_to_id - ID связанной задачи (дочерней/подзадачи)
+- delay_days - задержка в днях
+
+ПРАВИЛА ПОИСКА:
+1. Для поиска "открытых задач" используйте условие: is_closed = false. Таблицы issue_statuses не существует!
+2. Для поиска по автору или исполнителю используйте поля author_name и assignee_name. Таблицы users для джойнов не нужно!
+3. Для поиска по проекту предпочтительно использовать поле project_name в таблице issues с оператором ILIKE (например: project_name ILIKE '%eily.acuario%'), так как это избавляет от необходимости делать JOIN с таблицей projects и защищает от ошибок точного совпадения регистра в поле identifier.
+
+Пример использования:
+Для поиска подзадач задачи X:
+SELECT i.* FROM issue_relations ir 
+JOIN issues i ON ir.issue_to_id = i.id 
+WHERE ir.issue_id = X
